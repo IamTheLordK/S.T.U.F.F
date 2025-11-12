@@ -1,7 +1,7 @@
 _G.F = {}
 
-getgenv().Netless = getgenv().Netless or false
-getgenv().Debug = getgenv().Debug or false
+getgenv().Netless = false
+getgenv().Debug = false
 
 local function Filter(P)
  if not P:IsA("BasePart") or not P.AssemblyRootPart then return end
