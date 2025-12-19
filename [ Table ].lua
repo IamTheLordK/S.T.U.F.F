@@ -1,32 +1,17 @@
-_G.F = {}
-
-getgenv().Netless = false
-getgenv().Debug = false
+_G.F, _G.U, _G.A = {}, {}, {}
 
 local function Filter(P)
- if not P:IsA("BasePart") or not P.AssemblyRootPart then return end
- if game.Players:GetPlayerFromCharacter(P.Parent) or game.Players:GetPlayerFromCharacter(P.Parent.Parent) then return end
- if P.AssemblyRootPart.Anchored then return end
- 
- if P.ReceiveAge == 0 then _G.F[P] = true else spawn(function()
-  repeat wait() until not P.Parent or P.ReceiveAge == 0
-  if P.Parent and P.ReceiveAge == 0 then Filter(P) end
- end) end
+ if not P.AssemblyRootPart or game.Players:GetPlayerFromCharacter(P.Parent) or game.Players:GetPlayerFromCharacter(P.Parent.Parent) then return end
+ if P.AssemblyRootPart.Anchored then _G.A[P] = true elseif P.ReceiveAge == 0 then _G.F[P] = true else _G.U[P] = true end
 end
 
-for _, P in pairs(workspace:GetDescendants()) do Filter(P) end
+for _, v in pairs(workspace:QueryDescendants("BasePart")) do Filter(v) end
 
-spawn(function() while 1 > 0 do task.wait()
- for P in pairs(_G.F) do if P.ReceiveAge ~= 0 then _G.F[P] = nil end end
-end end)
+workspace.DescendantAdded:Connect(function(v) if v:IsA("BasePart") then if game.PlaceId == 189707 or game.PlaceId == 7057417395 then wait(1) end Filter(v) end end)
+workspace.DescendantRemoving:Connect(function(v) _G.F[v], _G.U[v], _G.A[v] = nil, nil, nil end)
 
-workspace.DescendantAdded:Connect(function(C) if C:IsA("BasePart") then if game.PlaceId == 189707 or game.PlaceId == 7057417395 then wait(1) end Filter(C) end end)
-
-while 1 > 0 do task.wait()
- for P in pairs(_G.F) do
-  if getgenv().Netless then P.Velocity = Vector3.one * 26.6565464 end
-  if getgenv().Debug then P.Color = Color3.fromRGB(255, 0, 0) end
-  P.RootPriority = 127
-  P.Massless = true
- end
-end
+game:GetService("RunService").PostSimulation:Connect(function()
+ for v in pairs(_G.F) do if v.ReceiveAge ~= 0 then _G.F[v], _G.U[v] = nil, true end end
+ for v in pairs(_G.U) do if v.ReceiveAge == 0 then _G.U[v], _G.F[v] = nil, true end end
+ for v in pairs(_G.A) do if not v.AssemblyRootPart.Anchored then _G.A[v] = nil Filter(v) end end
+end)
