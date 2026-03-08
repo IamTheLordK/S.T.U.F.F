@@ -23,14 +23,14 @@ end
 end)
 
 while game:GetService("RunService").RenderStepped:Wait() do
-local Char = game.Players.LocalPlayer.Character
+local Char = Players.LocalPlayer.Character
 if not Char or not Char:FindFirstChild("Head") then continue end
 
 Ray.FilterDescendantsInstances = {Char}
 local Target, MinD = nil, math.huge
 
 for _, P in ipairs(Players:GetPlayers()) do
- if P ~= game.Players.LocalPlayer and (not TeamCheck or P.Team ~= game.Players.LocalPlayer.Team) and P.Character and P.Character:FindFirstChild("Head") then
+ if P ~= Players.LocalPlayer and (not TeamCheck or P.Team ~= Players.LocalPlayer.Team) and P.Character and P.Character:FindFirstChild("Head") then
   local D = P:DistanceFromCharacter(Char.Head.Position)
   if D > 0 and D <= MaxD and D < MinD - 5 then
    local Hit = workspace:Raycast(workspace.CurrentCamera.CFrame.Position, P.Character.Head.Position - workspace.CurrentCamera.CFrame.Position, Ray)
