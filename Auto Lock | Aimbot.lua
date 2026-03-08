@@ -2,9 +2,9 @@ local Input = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
 local TeamCheck = true -- // ctrl + r to toggle
-local Enabled = false -- // mousebutton3 to toggle
+local Enabled = true -- // mousebutton3 to toggle
 
-local Method = "2" -- // method 1 → workspace.CurrentCamera | Method 2 → mousemoverel
+local Method = "1" -- // method 1 → workspace.CurrentCamera | Method 2 → mousemoverel
 local MaxD = 500 -- // max distance
 
 local Ray = RaycastParams.new()
