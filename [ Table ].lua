@@ -1,7 +1,8 @@
 _G.F, _G.U, _G.A = {}, {}, {}
 
 local function Filter(P)
- if not P.AssemblyRootPart or game.Players:GetPlayerFromCharacter(P.Parent) or game.Players:GetPlayerFromCharacter(P.Parent.Parent) then return end
+ if not P.AssemblyRootPart then return end
+ if game.Players:GetPlayerFromCharacter(P:FindFirstAncestorOfClass("Model")) then return end
  if P.AssemblyRootPart.Anchored then _G.A[P] = true elseif P.ReceiveAge == 0 then _G.F[P] = true else _G.U[P] = true end
 end
 
