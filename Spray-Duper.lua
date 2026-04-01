@@ -1,3 +1,4 @@
+--just for fencing.
 local Char = game.Players.LocalPlayer.Character
 local Amount = 50
 
