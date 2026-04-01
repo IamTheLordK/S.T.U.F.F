@@ -1,4 +1,4 @@
-game.StarterGui:SetCore("SendNotification", {Title = "[ Server hop ]", Text = "Searching for a server...", Duration = 5})
+game.StarterGui:SetCore("SendNotification", {Title = "[ Server hop ]", Text = "Searching for a server...", Duration = 1e2})
 
 local function Hop()
 local S = {}
