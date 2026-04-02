@@ -20,10 +20,3 @@ while Char.Humanoid.Health > 0 do task.wait()
   end
  end
 end
-
--- // UnHoldToolAnim
-for _, v in next, Char.Humanoid:GetPlayingAnimationTracks() do
- if v.Name == "ToolNoneAnim" then v:Stop() end
-end
-
-Char.Animate.toolnone.ToolNoneAnim.AnimationId = ""
