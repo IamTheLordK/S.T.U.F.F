@@ -4,7 +4,7 @@ local Amount = 50
 
 workspace.Handle.CanCollide = false
 
-for _ = 2, Amount do
+for _ = 1, Amount do
  firetouchinterest(workspace.Handle, Char.HumanoidRootPart, 0)
  firetouchinterest(workspace.Handle, Char.HumanoidRootPart, 1)
  local T = Char.ChildAdded:Wait() task.wait(-math.huge)
