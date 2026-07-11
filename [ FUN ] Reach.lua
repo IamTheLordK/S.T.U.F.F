@@ -1,10 +1,11 @@
 --may not work on all games.
-local Char = game.Players.LocalPlayer.Character
-local Arm = Char["Right Arm"] or Char["RightHand"]
 
 -- // GetClosest
-while Char.Humanoid.Health > 0 do task.wait()
+while game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid.Health > 0 do task.wait()
+ local Char = game.Players.LocalPlayer.Character
+ local Arm = Char["Right Arm"] or Char["RightHand"]
  local Target, Distance = nil, math.huge
+
  for _, v in pairs(game.Players:GetPlayers()) do
   if v == game.Players.LocalPlayer then continue end
   local D = v:DistanceFromCharacter(Char.HumanoidRootPart.Position)
