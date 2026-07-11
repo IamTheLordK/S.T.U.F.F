@@ -1,8 +1,8 @@
 --may not work on all games.
-
 -- // GetClosest
-while game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid.Health > 0 do task.wait()
- local Char = game.Players.LocalPlayer.Character
+while task.wait() do
+ local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+ if not Char:FindFirstChild("Humanoid") or Char.Humanoid.Health <= 0 then continue end
  local Arm = Char["Right Arm"] or Char["RightHand"]
  local Target, Distance = nil, math.huge
 
