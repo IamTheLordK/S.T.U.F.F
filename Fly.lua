@@ -1,5 +1,3 @@
-local Input = game:GetService("UserInputService")
-
 local Speed = 200
 local Fly = false
 
@@ -16,8 +14,8 @@ game:GetService("RunService").Heartbeat:Connect(function()
  BodyV.Velocity = Char.Humanoid.MoveDirection.Magnitude > 0 and (workspace.CurrentCamera.CFrame.LookVector * Char.Humanoid.MoveDirection:Dot(Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, 0, workspace.CurrentCamera.CFrame.LookVector.Z).Unit) + workspace.CurrentCamera.CFrame.RightVector * Char.Humanoid.MoveDirection:Dot(Vector3.new(workspace.CurrentCamera.CFrame.RightVector.X, 0, workspace.CurrentCamera.CFrame.RightVector.Z).Unit)) * Speed or Vector3.zero
 end)
 
-Input.InputBegan:Connect(function(Key)
- if Key.KeyCode ~= Enum.KeyCode.E or not Input:IsKeyDown(Enum.KeyCode.LeftControl) then return end
+game:GetService("UserInputService").InputBegan:Connect(function(Key)
+ if Key.KeyCode ~= Enum.KeyCode.E or not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then return end
  local Char = game.Players.LocalPlayer.Character
  local Root = Char.HumanoidRootPart
  Fly = not Fly
