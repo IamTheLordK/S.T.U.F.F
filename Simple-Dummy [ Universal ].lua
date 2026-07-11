@@ -1,15 +1,20 @@
 local Players = game:GetService("Players")
 local Char = Players.LocalPlayer.Character
-Char.Head.Anchored = true
+Char.HumanoidRootPart.Anchored = true --removable
 
-local D = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Players.LocalPlayer.UserId), Enum.HumanoidRigType.R6)
+local D = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Players.LocalPlayer.UserId), Enum.HumanoidRigType.R6) --or R15
 
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 D.Name = ""
 D.Parent = workspace
-D.HumanoidRootPart.CFrame = Char.HumanoidRootPart.CFrame + Vector3.new(0, 0, 5)
+D.HumanoidRootPart.CFrame = Char.HumanoidRootPart.CFrame + Char.HumanoidRootPart.CFrame.LookVector * 2.5
 D.HumanoidRootPart.Transparency = 1
+D.Humanoid.AutoRotate = true --enable shiftlock
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-workspace.CurrentCamera.CameraSubject = D.Humanoid
+
+workspace.CurrentCamera.CameraSubject = D
 
 local State = "Idle"
 local Anims = {}
@@ -23,13 +28,11 @@ end
 Anims.Idle:Play()
 
 while Char.Humanoid.Health > 0 do game:GetService("RunService").RenderStepped:Wait()
- 
- if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.LockCenter then
-  D.HumanoidRootPart.CFrame = CFrame.new(D.HumanoidRootPart.Position) * CFrame.Angles(0, math.atan2(-workspace.CurrentCamera.CFrame.LookVector.X, -workspace.CurrentCamera.CFrame.LookVector.Z), 0)
- end
 
+ --noclip; removable
  for _, v in D:QueryDescendants("BasePart") do v.CanCollide = false end
 
+ --movement
  D.Humanoid.Jump = Char.Humanoid.Jump
  D.Humanoid:Move(Char.Humanoid.MoveDirection)
 
@@ -37,4 +40,5 @@ while Char.Humanoid.Health > 0 do game:GetService("RunService").RenderStepped:Wa
  if State ~= NState then if Anims[State] then Anims[State]:Stop(.2) end Anims[NState]:Play() State = NState end
 end
 
-D:Destroy() -- Destroy Dummy on Death
+wait(Players.RespawnTime) --removable
+D:Destroy() --destroy dummy on death
