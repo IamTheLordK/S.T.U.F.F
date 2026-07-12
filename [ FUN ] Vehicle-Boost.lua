@@ -1,10 +1,11 @@
--- allows using a continuous nitro when pressing E, E to toggle.
+--allows using a continuous nitro when pressing E, E to toggle.
 local Speed = 250
 
 local S = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+local Box = Instance.new("TextBox", S)
+
 S.ResetOnSpawn = false
 
-local Box = Instance.new("TextBox", S)
 Box.Size = UDim2.new(0, 100, 0, 26)
 Box.Position = UDim2.new(0, 8, 0, 8)
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -14,8 +15,7 @@ Box.TextSize = 14
 Box.Text = tostring(Speed)
 Box.PlaceholderText = "Speed"
 
-
-Box:GetPropertyChangedSignal("Text"):Connect(function()
+Box.FocusLost:Connect(function()
  Speed = tonumber(Box.Text) or Speed
 end)
 
