@@ -19,6 +19,7 @@ end)
 
 game:GetService("UserInputService").InputBegan:Connect(function(i)
 if i.KeyCode ~= Enum.KeyCode.E then return end
+if not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) and not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.RightControl) then return end
 local Char = game.Players.LocalPlayer.Character
 local Humanoid = Char and Char:FindFirstChild("Humanoid")
 local Seat = Humanoid and Humanoid.SeatPart
