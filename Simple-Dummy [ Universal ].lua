@@ -46,4 +46,4 @@ while Humanoid.Health > 0 do game:GetService("RunService").RenderStepped:Wait()
 end
 
 wait(Players.RespawnTime) --removable
-Dummy:Destroy() --destroy dummy on death
+Dummy:Destroy() --destroy dummy on death; removable
