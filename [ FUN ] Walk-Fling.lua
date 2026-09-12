@@ -1,5 +1,4 @@
 local Char = game:GetService("Players").LocalPlayer.Character
-Char.Humanoid:ChangeState(11)
 
 while Char:IsDescendantOf(workspace) and game:GetService("RunService").Heartbeat:Wait() do
  local V = Char.HumanoidRootPart.AssemblyLinearVelocity
