@@ -1,7 +1,7 @@
-local Char = game.Players.LocalPlayer.Character
-
-for _, v in next, Char.Humanoid:GetPlayingAnimationTracks() do
- if v.Name == "ToolNoneAnim" then v:Stop() end
-end
-
-Char.Animate.toolnone.ToolNoneAnim.AnimationId = ""
+task.spawn(function()
+ while task.wait() do
+  local Char = game.Players.LocalPlayer.Character
+  local Animate = Char and Char:FindFirstChild("Animate")
+  Animate.toolnone.ToolNoneAnim.AnimationId = ""
+ end
+end)
