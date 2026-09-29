@@ -1,8 +1,9 @@
-local Char = game:GetService("Players").LocalPlayer.Character
+local Root = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
 
-while Char.Parent do game.RunService.Heartbeat:Wait()
- local V = Char.HumanoidRootPart.AssemblyLinearVelocity
- Char.HumanoidRootPart.AssemblyLinearVelocity = Vector3.one * 2^63
- game:GetService("RunService").RenderStepped:Wait()
- Char.HumanoidRootPart.AssemblyLinearVelocity = V
+while Root.Parent do 
+ game.RunService.PostSimulation:Wait()
+ local V = Root.AssemblyLinearVelocity
+ Root.AssemblyLinearVelocity = Vector3.one * 2^63
+ game.RunService.PreRender:Wait()
+ Root.AssemblyLinearVelocity = V
 end
