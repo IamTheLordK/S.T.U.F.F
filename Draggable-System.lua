@@ -1,23 +1,20 @@
-local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 300, 0, 200)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.Parent = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+local Frame = Instance.new("Frame", Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui))
+
+Frame.Parent.ResetOnSpawn = false
+Frame.Size = UDim2.new(0,150,0,150)
+Frame.Position = UDim2.new(0.5,-150,0.5,-100)
+Frame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 
 local M = game.Players.LocalPlayer:GetMouse()
-local Drag, OffX, OffY = false, 0, 0
 
 Frame.InputBegan:Connect(function(i)
- if i.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
- Drag = true
- OffX = Frame.AbsolutePosition.X - M.X
- OffY = Frame.AbsolutePosition.Y - M.Y
- 
- while Drag do task.wait()
-  Frame.Position = Frame.Position:Lerp(UDim2.new(0, M.X + OffX, 0, M.Y + OffY), 0.1)
+if i.UserInputType ~= Enum.UserInputType.MouseButton1 and i.UserInputType ~= Enum.UserInputType.Touch then return end
+local Touch = i.UserInputType == Enum.UserInputType.Touch
+local P = Touch and i.Position or Vector2.new(M.X,M.Y)
+local OffX = Frame.AbsolutePosition.X - P.X
+local OffY = Frame.AbsolutePosition.Y - P.Y
+ while i.UserInputState ~= Enum.UserInputState.End do task.wait()
+  P = Touch and i.Position or Vector2.new(M.X,M.Y)
+  Frame.Position = Frame.Position:Lerp(UDim2.new(0,P.X+OffX,0,P.Y+OffY),0.1)
  end
-end)
-
-Frame.InputEnded:Connect(function(i)
- if i.UserInputType == Enum.UserInputType.MouseButton1 then Drag = false end
 end)
