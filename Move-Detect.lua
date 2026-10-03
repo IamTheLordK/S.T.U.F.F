@@ -1,5 +1,6 @@
 local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+local Moving = false
 
-Humanoid.Changed:Connect(function()
- if Humanoid.MoveDirection.Magnitude > 0 then print("Moving") else print("Idle") end
+Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
+ if (Humanoid.MoveDirection.Magnitude > 0) ~= Moving then Moving = not Moving print(Moving and "Moving" or "Idle") end
 end)
