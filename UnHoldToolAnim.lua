@@ -1,7 +1,5 @@
-task.spawn(function()
- while task.wait() do
-  local Char = game.Players.LocalPlayer.Character
-  local Animate = Char and Char:FindFirstChild("Animate")
-  Animate.toolnone.ToolNoneAnim.AnimationId = ""
- end
-end)
+while task.wait() do
+ local Char = game.Players.LocalPlayer.Character if not Char then continue end
+ local Animate = Char:FindFirstChild("Animate") if not Animate then continue end
+ Animate.toolnone.ToolNoneAnim.AnimationId = ""
+end
