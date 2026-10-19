@@ -18,7 +18,7 @@ Track.TimePosition = 1
 
 game:GetService("UserInputService").InputBegan:Connect(function(v, p)
  if p or v.KeyCode ~= Enum.KeyCode.E then return end
- Speed += ((game.Players.LocalPlayer:GetMouse().Hit.Position - Clone.Position) * Vector3.new(1,0,1)).Unit * 100
+ Speed += Char.Humanoid.MoveDirection * 100
 end)
 
 while Char.Parent do local v = game.RunService.PostSimulation:Wait()
