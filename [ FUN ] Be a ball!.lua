@@ -1,3 +1,4 @@
+-- "E" for impulse.
 local Char = game.Players.LocalPlayer.Character
 local Root = Char.HumanoidRootPart
 local Clone = Root:Clone()
@@ -14,6 +15,11 @@ Animation.AnimationId = "rbxassetid://42070810"
 local Track = Char.Humanoid:LoadAnimation(Animation)
 Track:Play(0, 1, 0)
 Track.TimePosition = 1
+
+game:GetService("UserInputService").InputBegan:Connect(function(v, p)
+ if p or v.KeyCode ~= Enum.KeyCode.E then return end
+ Speed += ((game.Players.LocalPlayer:GetMouse().Hit.Position - Clone.Position) * Vector3.new(1,0,1)).Unit * 100
+end)
 
 while Char.Parent do local v = game.RunService.PostSimulation:Wait()
  local Axis = Vector3.yAxis:Cross(Clone.AssemblyLinearVelocity)
