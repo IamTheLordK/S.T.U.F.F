@@ -46,7 +46,7 @@ for _, v in game:GetService("ReplicatedStorage"):QueryDescendants("ModuleScript"
 end
 
 Dump ..= "-- // Scripts\n"..("-"):rep(100).."\n"
-for _, v in game:QueryDescendants("Script") do Dump ..= (v.ClassName == "Script" and "%s\n" or "setclipboard(decompile(%s))\n"):format(Path(v)) end
+for _, v in game:QueryDescendants("Script") do Dump ..= (v.ClassName == "Script" and v.RunContext ~= Enum.RunContext.Client and "%s\n" or "setclipboard(decompile(%s))\n"):format(Path(v)) end
 
 Dump ..= "\n-- // Remotes\n"..("-"):rep(100).."\n"
 for _, v in game:QueryDescendants("RemoteEvent") do Dump ..= Path(v)..":FireServer()\n" end
