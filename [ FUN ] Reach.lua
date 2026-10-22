@@ -1,23 +1,23 @@
 --may not work on all games.
--- // GetClosest
 while task.wait() do
- local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
- if not Char:FindFirstChild("Humanoid") or Char.Humanoid.Health <= 0 then continue end
- local Arm = Char["Right Arm"] or Char["RightHand"]
- local Target, Distance = nil, math.huge
+ local Char = game:GetService("Players").LocalPlayer.Character if not Char then continue end
+ local Humanoid = Char:FindFirstChild("Humanoid") if not Humanoid then continue end
+ local Root = Humanoid.RootPart if not Root then continue end
+ local Arm = Char:FindFirstChild("Right Arm") or Char:FindFirstChild("RightHand") if not Arm then continue end
+ local Grip = Arm:FindFirstChild("RightGrip") if not Grip then continue end
 
- for _, v in pairs(game.Players:GetPlayers()) do
-  if v == game.Players.LocalPlayer then continue end
-  local D = v:DistanceFromCharacter(Char.HumanoidRootPart.Position)
-  if D > 0 and D < Distance then Target, Distance = v, D end
+ local Target, Best = nil, math.huge
+ for _, v in game:GetService("Players"):GetPlayers() do
+  local Distance = v:DistanceFromCharacter(Root.Position)
+  if v ~= game:GetService("Players").LocalPlayer and Distance > 0 and Distance < Best then Target, Best = v, Distance end
  end
 
- -- // Grip to CFrame
- if not (Target and Target.Character) then continue end
- for _, Tool in pairs(Char:GetChildren()) do
-  if Tool:IsA("Tool") and Tool:FindFirstChild("Handle") and Arm:FindFirstChild("RightGrip") then
-   Tool.Handle.Massless = true
-   Tool.Grip = Target.Character.HumanoidRootPart.CFrame:Inverse() * Arm.CFrame * Arm.RightGrip.C0
+ if not Target then continue end
+ local TRoot = Target.Character:FindFirstChild("HumanoidRootPart") if not TRoot then continue end
+
+ for _, v in pairs(Char:GetChildren()) do
+  if v:IsA("Tool") and v:FindFirstChild("Handle") then v.Handle.Massless = true
+   v.Grip = TRoot.CFrame:Inverse() * Arm.CFrame * Grip.C0
   end
  end
 end
