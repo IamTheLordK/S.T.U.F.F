@@ -14,7 +14,7 @@ local function tabletostring(Value, Seen)
  if Type == "function" then return "function" end
  if Type == "Instance" then return Path(Value) or tostring(Value) end
  if Type == "BrickColor" then return "BrickColor.new("..string.format("%q", tostring(Value))..")" end
- if Type ~= "table" then return Type:find("^%u") and Type ~= "EnumItem" and Type..".new("..tostring(Value):gsub("[{}]", "")..")" or tostring(Value) end
+ if Type ~= "table" then return Type:find("^%u") and not Type:find("^Enum") and Type..".new("..tostring(Value):gsub("[{}]", "")..")" or tostring(Value) end
  Seen = Seen or {}
  if Seen[Value] then return "{...}" end
  Seen[Value] = true
@@ -23,7 +23,6 @@ local function tabletostring(Value, Seen)
  Seen[Value] = nil
  return "{"..table.concat(Result, ", ").."}"
 end
-
 
 
 --// scan
