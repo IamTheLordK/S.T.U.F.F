@@ -1,13 +1,7 @@
-while game:GetService("RunService").Stepped:Wait() do
- for _, P in game:GetService("Players"):GetPlayers() do
-  if P == game:GetService("Players").LocalPlayer or not P.Character then continue end
-  pcall(function()
-   for _, V in P.Character:QueryDescendants("BasePart") do
-    V.CanCollide = false
-    if V.Name == "Torso" or V.Name == "HumanoidRootPart" then V.Massless = true end
-    V.AssemblyLinearVelocity = Vector3.zero
-    V.AssemblyAngularVelocity = Vector3.zero
-   end
-  end)
+while game.RunService.Stepped:Wait() do
+ for _, v in game:GetService("Players"):GetPlayers() do
+  if v ~= game:GetService("Players").LocalPlayer and v.Character then
+   for _, k in v.Character:QueryDescendants("BasePart[CanCollide = true]") do k.CanCollide = false end
+  end
  end
 end
