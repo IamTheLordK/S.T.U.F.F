@@ -1,49 +1,31 @@
 local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Char = Player.Character
 
-local Char = Players.LocalPlayer.Character
-local Humanoid = Char and Char:FindFirstChild("Humanoid")
-local Root = Char and Char:FindFirstChild("HumanoidRootPart")
-if not Char or not Humanoid or not Root then return end
+Char.HumanoidRootPart.Anchored = true --removable
 
-Root.Anchored = true --removable
+local Dummy = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Player.UserId), Char.Humanoid.RigType)
 
-local Dummy = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Players.LocalPlayer.UserId), Enum.HumanoidRigType.R6) --or R15
-
-
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 Dummy.Name = ""
-Dummy.Parent = workspace
-Dummy.HumanoidRootPart.CFrame = Root.CFrame + Root.CFrame.LookVector * 2.5
-Dummy.HumanoidRootPart.Transparency = 1
-Dummy.Humanoid.AutoRotate = true --enable shiftlock
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+Dummy.Parent = Char --LocalScripts only run inside your Character
+Dummy.HumanoidRootPart.CFrame = Char.HumanoidRootPart.CFrame * CFrame.new(0,0,-2.5)
 
+local Animate = Char.Animate:Clone()
+Animate.Parent = Dummy
+task.wait(1) --Animate caches script.Parent on start
+Animate.Parent = Char
+Dummy.Parent = workspace
 
 workspace.CurrentCamera.CameraSubject = Dummy
 
-local State = "Idle"
-local Anims = {}
+task.spawn(function()
+ while Char.Parent and Char.Humanoid.Health > 0 do task.wait()
+  for _, v in pairs(Dummy:QueryDescendants("BasePart[CanCollide = true]")) do v.CanCollide = false end --noclip; removable
 
-for S, Id in pairs({Idle=180435571,Walk=180426354,Jump=180435792,Fall=180436148}) do
- local A = Instance.new("Animation")
- A.AnimationId = "rbxassetid://" .. Id
- Anims[S] = Dummy.Humanoid:LoadAnimation(A)
-end
+  Dummy.Humanoid.Jump = Char.Humanoid.Jump
+  Dummy.Humanoid:Move(Char.Humanoid.MoveDirection)
+ end
 
-Anims.Idle:Play()
-
-while Humanoid.Health > 0 do game:GetService("RunService").RenderStepped:Wait()
-
- --noclip; removable
- for _, v in pairs(Dummy:QueryDescendants("BasePart")) do v.CanCollide = false end
-
- --movement
- Dummy.Humanoid.Jump = Humanoid.Jump
- Dummy.Humanoid:Move(Humanoid.MoveDirection)
-
- local NState = Dummy.Humanoid:GetState() == Enum.HumanoidStateType.Jumping and "Jump" or Dummy.Humanoid:GetState() == Enum.HumanoidStateType.Freefall and "Fall" or Dummy.Humanoid:GetState() == Enum.HumanoidStateType.Running and (Dummy.Humanoid.MoveDirection.Magnitude > 0 and "Walk" or "Idle") or "Idle"
- if State ~= NState then if Anims[State] then Anims[State]:Stop(.2) end Anims[NState]:Play() State = NState end
-end
-
-wait(Players.RespawnTime) --removable
-Dummy:Destroy() --destroy dummy on death; removable
+ Dummy:BreakJoints() --removable
+ task.delay(Players.RespawnTime, Dummy.Destroy, Dummy) --removable
+end)
