@@ -1,33 +1,26 @@
 local Speed = 200
-local Fly = false
 
-game.Players.LocalPlayer.CharacterAdded:Connect(function() Fly = false end)
-
-game:GetService("RunService").Heartbeat:Connect(function()
- if not Fly or not game.Players.LocalPlayer.Character then return end
- local Char = game.Players.LocalPlayer.Character
- local Root = Char.HumanoidRootPart
+game:GetService("UserInputService").InputBegan:Connect(function(v)
+ if v.KeyCode ~= Enum.KeyCode.E or not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then return end
+ local Char = game:GetService("Players").LocalPlayer.Character if not Char then return end
+ local Root = Char:FindFirstChild("HumanoidRootPart") if not Root then return end
  local BodyV = Root:FindFirstChild("BodyVelocity")
- local BodyG = Root:FindFirstChild("BodyGyro")
- if not BodyV or not BodyG then return end
- BodyG.CFrame = workspace.CurrentCamera.CFrame
- BodyV.Velocity = Char.Humanoid.MoveDirection.Magnitude > 0 and (workspace.CurrentCamera.CFrame.LookVector * Char.Humanoid.MoveDirection:Dot(Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, 0, workspace.CurrentCamera.CFrame.LookVector.Z).Unit) + workspace.CurrentCamera.CFrame.RightVector * Char.Humanoid.MoveDirection:Dot(Vector3.new(workspace.CurrentCamera.CFrame.RightVector.X, 0, workspace.CurrentCamera.CFrame.RightVector.Z).Unit)) * Speed or Vector3.zero
-end)
-
-game:GetService("UserInputService").InputBegan:Connect(function(Key)
- if Key.KeyCode ~= Enum.KeyCode.E or not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then return end
- local Char = game.Players.LocalPlayer.Character
- local Root = Char.HumanoidRootPart
- Fly = not Fly
- Char.Humanoid.PlatformStand = Fly
- if Fly then
-  local BodyG = Instance.new("BodyGyro", Root)
-  BodyG.MaxTorque = Vector3.one * math.huge
-  BodyG.CFrame = Root.CFrame
-  local BodyV = Instance.new("BodyVelocity", Root)
-  BodyV.MaxForce = Vector3.one * math.huge
-  BodyV.Velocity = Vector3.zero
- else
-  for _, V in pairs({"BodyGyro", "BodyVelocity"}) do if Root:FindFirstChild(V) then Root[V]:Destroy() end end
+ Char.Humanoid.PlatformStand = not BodyV
+ if BodyV then
+  BodyV:Destroy()
+  Root.BodyGyro:Destroy()
+  Root.CFrame = CFrame.lookAt(Root.Position, Root.Position + Root.CFrame.LookVector * Vector3.new(1,0,1))
+  return end
+ BodyV = Instance.new("BodyVelocity", Root)
+ BodyV.MaxForce = Vector3.one * math.huge
+ local BodyG = Instance.new("BodyGyro", Root)
+ BodyG.MaxTorque = Vector3.one * math.huge
+ BodyG.CFrame = Root.CFrame
+ while BodyV:IsDescendantOf(workspace) do task.wait()
+  Root.Velocity = Vector3.zero
+  Root.AssemblyLinearVelocity = Vector3.zero
+  Root.AssemblyAngularVelocity = Vector3.zero
+  BodyG.CFrame = workspace.CurrentCamera.CFrame
+  BodyV.Velocity = CFrame.fromAxisAngle(workspace.CurrentCamera.CFrame.RightVector, math.asin(workspace.CurrentCamera.CFrame.LookVector.Y)) * Char.Humanoid.MoveDirection * Speed
  end
 end)
