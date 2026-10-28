@@ -1,4 +1,5 @@
 game.Players.LocalPlayer.Character.Humanoid.EvaluateStateMachine = false
+game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
 
 for _, v in game.Players.LocalPlayer.Character:QueryDescendants("BasePart") do
  v.CustomPhysicalProperties = PhysicalProperties.new(0.7,0.3,1,1,100)
