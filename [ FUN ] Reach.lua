@@ -16,7 +16,8 @@ while task.wait() do
  local TRoot = Target.Character:FindFirstChild("HumanoidRootPart") if not TRoot then continue end
 
  for _, v in pairs(Char:GetChildren()) do
-  if v:IsA("Tool") and v:FindFirstChild("Handle") then v.Handle.Massless = true
+  if v:IsA("Tool") and v:FindFirstChild("Handle") then 
+   v.Handle.Massless = true
    v.Handle.CanCollide = false
    Grip.C0 = Arm.CFrame:ToObjectSpace(TRoot.CFrame) * Grip.C1
   end
