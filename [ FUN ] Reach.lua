@@ -17,7 +17,8 @@ while task.wait() do
 
  for _, v in pairs(Char:GetChildren()) do
   if v:IsA("Tool") and v:FindFirstChild("Handle") then v.Handle.Massless = true
-   v.Grip = TRoot.CFrame:Inverse() * Arm.CFrame * Grip.C0
+   v.Handle.CanCollide = false
+   Grip.C0 = Arm.CFrame:ToObjectSpace(TRoot.CFrame) * Grip.C1
   end
  end
 end
